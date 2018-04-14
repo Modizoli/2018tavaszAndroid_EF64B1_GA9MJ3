@@ -9,7 +9,7 @@ public class ModelFactory {
         fuel,
         peacefulDriver,
         recklessDriver,
-        dickDriver
+        followerDriver
     }
 
     public ModelBase createModel( ThingsEnum type ) {
@@ -29,10 +29,10 @@ public class ModelFactory {
                 RecklessDriver rd = new RecklessDriver();
 
                 res = rd;
-            case dickDriver:
-                FollowerDriver dd = new FollowerDriver();
+            case followerDriver:
+                FollowerDriver fd = new FollowerDriver();
 
-                res = dd;
+                res = fd;
                 break;
         };
 
