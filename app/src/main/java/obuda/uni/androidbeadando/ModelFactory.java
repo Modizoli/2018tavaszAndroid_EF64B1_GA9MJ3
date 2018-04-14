@@ -1,8 +1,5 @@
 package obuda.uni.androidbeadando;
 
-import static obuda.uni.androidbeadando.ModelFactory.ThingsEnum.*;
-import static obuda.uni.androidbeadando.ModelFactory.ThingsEnum.fuel;
-
 /**
  * Created by Zoltán on 4/14/2018.
  */
@@ -33,7 +30,7 @@ public class ModelFactory {
 
                 res = rd;
             case dickDriver:
-                DickDriver dd = new DickDriver();
+                FollowerDriver dd = new FollowerDriver();
 
                 res = dd;
                 break;
