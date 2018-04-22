@@ -14,10 +14,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         setMenuButtons();
     }
 
     private void setMenuButtons(){
+        FragmentManager fm=getSupportFragmentManager();
+        final FragmentTransaction ft=fm.beginTransaction();
         final Button[] menubuttons=new Button[3];
 
         menubuttons[0]=findViewById(R.id.start);
@@ -30,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
                     b.setVisibility(View.INVISIBLE);
                 }
 
-                LoadFragment();
+                LoadGameFragment(ft);
             }
         });
 
@@ -39,7 +48,12 @@ public class MainActivity extends AppCompatActivity {
         menubuttons[1].setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (Button b:menubuttons
+                        ) {
+                    b.setVisibility(View.INVISIBLE);
+                }
 
+                LoadSettingsFragment(ft);
             }
         });
 
@@ -54,9 +68,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void LoadFragment(){
-        FragmentManager fm=getSupportFragmentManager();
-        FragmentTransaction ft=fm.beginTransaction();
+    private void LoadSettingsFragment(FragmentTransaction ft)
+    {
+        ft.addToBackStack("MainActivity");
+        ft.replace(R.id.fragment_container,new SettingsFragment());
+        ft.commit();
+    }
+
+    private void LoadGameFragment(FragmentTransaction ft){
+        ft.addToBackStack("MainActivity");
         ft.replace(R.id.fragment_container,new GameFragment());
         ft.commit();
     }
