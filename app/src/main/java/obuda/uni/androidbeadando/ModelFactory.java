@@ -1,41 +1,28 @@
 package obuda.uni.androidbeadando;
 
+import android.util.SparseArray;
+
 /**
  * Created by Zoltán on 4/14/2018.
  */
 
 public class ModelFactory {
-    public enum ThingsEnum{
-        fuel,
-        peacefulDriver,
-        recklessDriver,
-        followerDriver
-    }
+    public static final int FUEL = 0;
+    public static final int PEACEFUL_DRIVER = 1;
+    public static final int RECKLESS_DRIVER = 2;
+    public static final int FOLLOWER_DRIVER = 3;
 
-    public ModelBase createModel( ThingsEnum type ) {
-        ModelBase res = null;
+    SparseArray<ModelBase> models;
 
-        switch( type ) {
-            case fuel:
-                FuelModel fm = new FuelModel();
-
-                res = fm;
-                break;
-            case peacefulDriver:
-                PeacefulDriver pd = new PeacefulDriver();
-
-                res = pd;
-            case recklessDriver:
-                RecklessDriver rd = new RecklessDriver();
-
-                res = rd;
-            case followerDriver:
-                FollowerDriver fd = new FollowerDriver();
-
-                res = fd;
-                break;
-        };
-
-        return res;
+    public ModelBase createModel( int type ) {
+        return models.get(type);
     };
+
+    public ModelFactory(){
+        models = new SparseArray<ModelBase>();
+        models.append( FUEL, new FuelModel() );
+        models.append( PEACEFUL_DRIVER, new PeacefulDriver() );
+        models.append( RECKLESS_DRIVER, new RecklessDriver() );
+        models.append( FOLLOWER_DRIVER, new FollowerDriver() );
+    }
 }
