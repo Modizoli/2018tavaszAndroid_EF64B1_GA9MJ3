@@ -26,24 +26,8 @@ public class GameFragment  extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setCars();
+
 
     }
 
-    private void setCars()
-    {
-        ConstraintLayout cl=v.findViewById(R.id.map);
-
-        for(int i=0;i<5;i++){
-            AppCompatImageView imv=new AppCompatImageView(getContext());
-            imv.setLayoutParams(new ViewGroup.LayoutParams(80,120));
-            imv.setMaxHeight(120);
-            imv.setMaxWidth(80);
-            imv.setX(i*100);
-            imv.setY(i*100);
-            imv.setImageResource(R.drawable.car_purple_front);
-
-            cl.addView(imv);
-        }
-    }
 }
