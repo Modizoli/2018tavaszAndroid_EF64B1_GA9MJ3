@@ -3,4 +3,7 @@
     <string name="start">Start</string>
     <string name="settings">Settings</string>
     <string name="exit">Exit</string>
+    <string name="landscapemode">Landscape mode</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
 </resources>
