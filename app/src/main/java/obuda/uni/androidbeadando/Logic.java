@@ -4,9 +4,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.SystemClock;
 import android.util.Log;
 
-import java.util.List;
 import java.util.Vector;
 
 /**
@@ -14,8 +14,11 @@ import java.util.Vector;
  */
 
 public class Logic extends Thread {
+    ModelFactory modelFactory = new ModelFactory();
+
     boolean paused = true;
     boolean gameOver = false;
+    long frameRateTime = 1666;
 
     ModelBase player;
     Vector<ModelBase> things = new Vector<ModelBase>();
@@ -26,16 +29,30 @@ public class Logic extends Thread {
     // we dont move if abs(threshold, value) < threshold
     float inputValueThreshold = 3.f;
 
-    void togglePause(){
-        paused = !paused;
+    void setPaused( boolean isPaused ){
+        paused = isPaused;
     }
 
     void handleInput(){
-
+        Log.d("test", "TESTING");
     }
 
     void moveThings(){
+        for(int i = 0; i < things.size(); ++i){
+            ModelBase t = things.get(i);
 
+            IDriver driver = (IDriver)things.get(i);
+            if( driver != null ){
+                driver.drive();
+            // if its not a driver its fuel. just move it down.
+            } else {
+                t.py += t.velocity;
+            }
+
+            if( t.py > 1000 ){
+                things.remove( i );
+            }
+        }
     }
 
     // checks what the player collided with, returns null on nothing
@@ -48,17 +65,27 @@ public class Logic extends Thread {
     }
 
     public void run(){
+        things.add(modelFactory.createModel( ModelFactory.PEACEFUL_DRIVER, 0 ));
+
+        long lastFrameTime = 0;
         while( !gameOver ){
             if( !paused ){
-                handleInput();
-                moveThings();
+                long now = SystemClock.uptimeMillis();
 
-                Log.d("msg", "What");
+                while( lastFrameTime >= frameRateTime ) {
+                    handleInput();
+                    moveThings();
 
-                ModelBase collided = checkCollision();
-                if( collided != null ){
-                    HandleCollision( collided );
+                    ModelBase collided = checkCollision();
+                    if( collided != null ) {
+                        HandleCollision( collided );
+                    }
+
+                    lastFrameTime -= frameRateTime;
                 }
+
+                long end = SystemClock.uptimeMillis();
+                lastFrameTime += ( end - now );
             }
         }
     }

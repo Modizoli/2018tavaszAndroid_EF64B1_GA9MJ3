@@ -14,8 +14,12 @@ public class ModelFactory {
 
     SparseArray<ModelBase> models;
 
-    public ModelBase createModel( int type ) {
-        return models.get(type);
+    public ModelBase createModel( int type, int px ) {
+        ModelBase model = models.get(type);
+        model.px = px;
+        model.velocity = 1f;
+
+        return model;
     };
 
     public ModelFactory(){
