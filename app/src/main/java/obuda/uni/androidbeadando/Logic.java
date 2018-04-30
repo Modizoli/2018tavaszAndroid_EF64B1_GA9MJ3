@@ -4,8 +4,10 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 
 import java.util.List;
+import java.util.Vector;
 
 /**
  * Created by Zoltán on 4/25/2018.
@@ -16,7 +18,7 @@ public class Logic extends Thread {
     boolean gameOver = false;
 
     ModelBase player;
-    List<ModelBase> things;
+    Vector<ModelBase> things = new Vector<ModelBase>();
 
     public SensorManager sm;
     float[] sensorInputValues;
@@ -50,6 +52,8 @@ public class Logic extends Thread {
             if( !paused ){
                 handleInput();
                 moveThings();
+
+                Log.d("msg", "What");
 
                 ModelBase collided = checkCollision();
                 if( collided != null ){

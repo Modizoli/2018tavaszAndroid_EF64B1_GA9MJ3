@@ -14,4 +14,8 @@ public class PeacefulDriver extends ModelBase implements ICollidable, IDriver {
     public void onCollision() {
 
     }
+
+    public PeacefulDriver(){
+        resourceName = "greencar";
+    }
 }

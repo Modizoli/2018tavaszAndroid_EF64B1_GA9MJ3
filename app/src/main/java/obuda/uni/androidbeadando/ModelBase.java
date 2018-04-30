@@ -10,6 +10,6 @@ public class ModelBase {
     public float py;
     public int width;
     public int height;
-    public int resId;
     public float velocity;
+    public String resourceName;
 }

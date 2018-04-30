@@ -35,6 +35,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 LoadGameFragment(ft);
+
             }
         });
         settingbutton.setOnClickListener(new View.OnClickListener() {
