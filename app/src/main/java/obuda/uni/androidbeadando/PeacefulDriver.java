@@ -6,8 +6,8 @@ package obuda.uni.androidbeadando;
 
 public class PeacefulDriver extends ModelBase implements ICollidable, IDriver {
     @Override
-    public void drive() {
-        px += velocity;
+    public void drive( long elapsedMS ) {
+        py += ( velocity * elapsedMS ) / 1000;
     }
 
     @Override

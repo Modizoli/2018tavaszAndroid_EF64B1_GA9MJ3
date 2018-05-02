@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.SystemClock;
 import android.util.Log;
+import android.view.View;
 
 import java.util.Vector;
 
@@ -15,6 +16,9 @@ import java.util.Vector;
 
 public class Logic extends Thread {
     ModelFactory modelFactory = new ModelFactory();
+
+    // set from game fragment
+    public DrawingCanvas view;
 
     boolean paused = true;
     boolean gameOver = false;
@@ -34,19 +38,19 @@ public class Logic extends Thread {
     }
 
     void handleInput(){
-        Log.d("test", "TESTING");
+
     }
 
-    void moveThings(){
+    void moveThings( long frameTimeMS ){
         for(int i = 0; i < things.size(); ++i){
             ModelBase t = things.get(i);
 
             IDriver driver = (IDriver)things.get(i);
             if( driver != null ){
-                driver.drive();
+                driver.drive( frameTimeMS );
             // if its not a driver its fuel. just move it down.
             } else {
-                t.py += t.velocity;
+                t.py += ( t.velocity * frameTimeMS ) / 1000;
             }
 
             if( t.py > 1000 ){
@@ -72,20 +76,18 @@ public class Logic extends Thread {
             if( !paused ){
                 long now = SystemClock.uptimeMillis();
 
-                while( lastFrameTime >= frameRateTime ) {
-                    handleInput();
-                    moveThings();
+                handleInput();
+                moveThings( lastFrameTime );
 
-                    ModelBase collided = checkCollision();
+                ModelBase collided = checkCollision();
                     if( collided != null ) {
                         HandleCollision( collided );
                     }
 
-                    lastFrameTime -= frameRateTime;
-                }
-
                 long end = SystemClock.uptimeMillis();
                 lastFrameTime += ( end - now );
+
+                view.postInvalidate();
             }
         }
     }

@@ -6,7 +6,7 @@ package obuda.uni.androidbeadando;
 
 public class RecklessDriver extends ModelBase implements ICollidable, IDriver {
     @Override
-    public void drive() {
+    public void drive( long elapsedMS ) {
 
     }
 

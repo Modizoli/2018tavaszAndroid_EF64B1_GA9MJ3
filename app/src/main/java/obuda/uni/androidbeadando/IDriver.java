@@ -5,5 +5,5 @@ package obuda.uni.androidbeadando;
  */
 
 public interface IDriver {
-    void drive();
+    void drive( long elapsedMS );
 }

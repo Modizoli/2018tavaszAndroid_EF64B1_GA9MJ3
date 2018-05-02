@@ -17,7 +17,7 @@ public class ModelFactory {
     public ModelBase createModel( int type, int px ) {
         ModelBase model = models.get(type);
         model.px = px;
-        model.velocity = 1f;
+        model.velocity = 000.1f;
 
         return model;
     };

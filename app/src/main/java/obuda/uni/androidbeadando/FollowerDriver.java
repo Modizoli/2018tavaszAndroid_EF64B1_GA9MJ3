@@ -7,7 +7,7 @@ package obuda.uni.androidbeadando;
 public class FollowerDriver extends ModelBase implements ICollidable, IDriver {
 
     @Override
-    public void drive() {
+    public void drive( long elapsedMS ) {
 
     }
 
