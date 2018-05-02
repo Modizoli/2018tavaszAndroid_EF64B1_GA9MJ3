@@ -5,11 +5,23 @@ package obuda.uni.androidbeadando;
  */
 
 public class ModelBase {
-    // position value between [0, 1] for dpi stuff
     public float px;
     public float py;
     public int width;
     public int height;
     public float velocity;
     public String resourceName;
+
+    public ModelBase(){
+
+    }
+
+    public ModelBase(ModelBase mb){
+        this.px = mb.px;
+        this.py = mb.py;
+        this.width = mb.width;
+        this.height = mb.height;
+        this.velocity = mb.velocity;
+        this.resourceName = mb.resourceName;
+    }
 }

@@ -18,4 +18,8 @@ public class PeacefulDriver extends ModelBase implements ICollidable, IDriver {
     public PeacefulDriver(){
         resourceName = "greencar";
     }
+    public PeacefulDriver(PeacefulDriver pd){
+        super(pd);
+        resourceName = "greencar";
+    }
 }

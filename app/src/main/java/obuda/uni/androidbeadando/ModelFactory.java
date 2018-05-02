@@ -15,7 +15,24 @@ public class ModelFactory {
     SparseArray<ModelBase> models;
 
     public ModelBase createModel( int type, int px ) {
-        ModelBase model = models.get(type);
+        ModelBase model = null;
+
+        // Copy ctor downcast; crashes if using base copy ctor.
+        switch(type){
+            case PEACEFUL_DRIVER:
+                model = new PeacefulDriver( (PeacefulDriver ) models.get( PEACEFUL_DRIVER ) );
+                break;
+            case RECKLESS_DRIVER:
+                model = new RecklessDriver( (RecklessDriver ) models.get( RECKLESS_DRIVER ) );
+                break;
+            case FOLLOWER_DRIVER:
+                model = new FollowerDriver( (FollowerDriver ) models.get( FOLLOWER_DRIVER ) );
+                break;
+            default:
+                break;
+        }
+
+
         model.px = px;
         model.velocity = 000.1f;
 

@@ -70,6 +70,7 @@ public class Logic extends Thread {
 
     public void run(){
         things.add(modelFactory.createModel( ModelFactory.PEACEFUL_DRIVER, 0 ));
+        things.add(modelFactory.createModel( ModelFactory.PEACEFUL_DRIVER, 200 ));
 
         long lastFrameTime = 0;
         while( !gameOver ){
