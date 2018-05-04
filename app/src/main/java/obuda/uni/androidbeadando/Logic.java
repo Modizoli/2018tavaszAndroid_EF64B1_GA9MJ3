@@ -20,9 +20,10 @@ public class Logic extends Thread {
     // set from game fragment
     public DrawingCanvas view;
 
-    boolean paused = true;
-    boolean gameOver = false;
-    long frameRateTime = 1666;
+    boolean paused      = true;
+    boolean gameOver    = false;
+    long frameRateTime  = 1666;
+    float score           = 0;
 
     ModelBase player;
     Vector<ModelBase> things = new Vector<ModelBase>();
@@ -87,6 +88,8 @@ public class Logic extends Thread {
 
                 long end = SystemClock.uptimeMillis();
                 lastFrameTime += ( end - now );
+
+                score += 1000.f / lastFrameTime;
 
                 view.postInvalidate();
             }
