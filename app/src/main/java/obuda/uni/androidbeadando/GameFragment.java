@@ -36,13 +36,4 @@ public class GameFragment  extends Fragment {
 
         return v;
     }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-
-
-    }
-
 }

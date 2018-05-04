@@ -32,41 +32,10 @@ public class SettingsFragment extends Fragment {
 
         final CheckBox landscapecheck=v.findViewById(R.id.landscapemode);
 
-        /*final Button[] settingbuttons=new Button[2];
-        settingbuttons[0]=v.findViewById(R.id.apply);
-        settingbuttons[0].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(landscapecheck.isChecked()){
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                    for (Button b:settingbuttons
-                            ) {
-                        b.setVisibility(View.INVISIBLE);
-                    }
-                    landscapecheck.setVisibility(View.INVISIBLE);
-                }
-                if(!landscapecheck.isChecked()) {
-                    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-                    for (Button b:settingbuttons
-                            ) {
-                        b.setVisibility(View.INVISIBLE);
-                    }
-                    landscapecheck.setVisibility(View.INVISIBLE);
-                }
-            }
-        });
-        settingbuttons[1]=v.findViewById(R.id.cancel);
-        settingbuttons[1].setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });*/
         Button applybutton=v.findViewById(R.id.apply);
         Button cancelbutton=v.findViewById(R.id.cancel);
 
         final android.support.v4.app.FragmentManager fm=getFragmentManager();
-        //final FragmentTransaction ft=fm.beginTransaction();
 
         applybutton.setOnClickListener(new View.OnClickListener() {
             @Override
