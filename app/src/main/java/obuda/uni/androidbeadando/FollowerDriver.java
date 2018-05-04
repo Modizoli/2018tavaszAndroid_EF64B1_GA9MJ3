@@ -15,4 +15,9 @@ public class FollowerDriver extends ModelBase implements ICollidable, IDriver {
     public void onCollision() {
 
     }
+
+    public FollowerDriver(){}
+    public FollowerDriver(FollowerDriver fd){
+        super(fd);
+    }
 }

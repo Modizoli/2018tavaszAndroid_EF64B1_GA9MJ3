@@ -14,4 +14,9 @@ public class RecklessDriver extends ModelBase implements ICollidable, IDriver {
     public void onCollision() {
 
     }
+
+    public RecklessDriver(){}
+    public RecklessDriver(RecklessDriver rd){
+        super(rd);
+    }
 }
