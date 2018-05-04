@@ -65,4 +65,10 @@ public class MenuFragment extends Fragment {
         ft.replace(R.id.fragment_container,new GameFragment());
         ft.commit();
     }
+
+    private void LoadHighScoreFragment(FragmentTransaction ft){
+        ft.addToBackStack(this.getClass().toString());
+        ft.replace(R.id.fragment_container,new HighScoreFragment());
+        ft.commit();
+    }
 }
