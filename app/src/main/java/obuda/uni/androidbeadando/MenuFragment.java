@@ -29,7 +29,7 @@ public class MenuFragment extends Fragment {
 
         menumusic = MediaPlayer.create(getContext(),R.raw.menu);
         menumusic.start();
-        menumusic.setVolume(10,10);
+        menumusic.setVolume(2,2);
 
         Button startbutton=v.findViewById(R.id.start);
         Button settingbutton=v.findViewById(R.id.settings);

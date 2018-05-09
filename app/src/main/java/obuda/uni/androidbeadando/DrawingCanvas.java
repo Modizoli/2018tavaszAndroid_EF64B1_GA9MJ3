@@ -57,6 +57,10 @@ class DrawingCanvas extends View {
     public DrawingCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
+        gamemusic = MediaPlayer.create(getContext(),R.raw.game);
+        gamemusic.start();
+        gamemusic.setVolume(10,10);
+
         redcar = BitmapFactory.decodeResource(getResources(),R.drawable.car_red_front );
         purplecar = BitmapFactory.decodeResource( getResources(), R.drawable.car_purple_front );
         greencar = BitmapFactory.decodeResource( getResources(), R.drawable.car_green_front );
