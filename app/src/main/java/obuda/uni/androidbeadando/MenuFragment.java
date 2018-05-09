@@ -1,5 +1,6 @@
 package obuda.uni.androidbeadando;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.Button;
 
 public class MenuFragment extends Fragment {
     private View v;
+    MediaPlayer menumusic;
 
 
     @Nullable
@@ -24,6 +26,11 @@ public class MenuFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        menumusic = MediaPlayer.create(getContext(),R.raw.menu);
+        menumusic.start();
+        menumusic.setVolume(10,10);
+
         Button startbutton=v.findViewById(R.id.start);
         Button settingbutton=v.findViewById(R.id.settings);
         Button exitbutton=v.findViewById(R.id.exit);
@@ -34,6 +41,9 @@ public class MenuFragment extends Fragment {
         startbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                menumusic.stop();
+                menumusic.release();
+
                 LoadGameFragment(ft);
 
             }
