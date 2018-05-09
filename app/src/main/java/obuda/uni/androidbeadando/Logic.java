@@ -23,39 +23,62 @@ public class Logic extends Thread {
     boolean paused      = true;
     boolean gameOver    = false;
     long frameRateTime  = 1666;
-    float score           = 0;
+    float score         = 0;
+
+    int wWidth;
+    int wHeight;
 
     ModelBase player;
     Vector<ModelBase> things = new Vector<ModelBase>();
+    Object thingsLock = new Object();
 
     public SensorManager sm;
-    float[] sensorInputValues;
+    float[] sensorInputValues = new float[]{0.f, 0.f, 0.f};
 
     // we dont move if abs(threshold, value) < threshold
     float inputValueThreshold = 3.f;
+
+    public void setwWidth(int width){this.wWidth=width;}
+    public void setwHeigth(int height){this.wHeight=height;}
 
     void setPaused( boolean isPaused ){
         paused = isPaused;
     }
 
-    void handleInput(){
+    void handleInput( float frameTimeMS ){
+        float x = sensorInputValues[0];
 
+        if(Math.abs(x) > inputValueThreshold){
+            // go right
+            if( x < 0 ){
+                if( player.px > 0 )
+                    player.px += 0.001 * frameTimeMS;
+
+            // go left
+            } else {
+                if(player.px < 250 )
+                    player.px -= 0.001 * frameTimeMS;
+            }
+        }
     }
 
     void moveThings( long frameTimeMS ){
-        for(int i = 0; i < things.size(); ++i){
-            ModelBase t = things.get(i);
+        synchronized( thingsLock ) {
 
-            IDriver driver = (IDriver)things.get(i);
-            if( driver != null ){
-                driver.drive( frameTimeMS );
-            // if its not a driver its fuel. just move it down.
-            } else {
-                t.py += ( t.velocity * frameTimeMS ) / 1000;
-            }
+            for( int i = 0; i < things.size(); ++i ) {
+                ModelBase t = things.get( i );
 
-            if( t.py > 1000 ){
-                things.remove( i );
+                IDriver driver = ( IDriver ) things.get( i );
+                if( driver != null ) {
+                    driver.drive( frameTimeMS );
+                    // if its not a driver its fuel. just move it down.
+                } else {
+                    t.py += ( t.velocity * frameTimeMS ) / 1000;
+                }
+
+                if( t.py > 1000 ) {
+                    things.remove( i );
+                }
             }
         }
     }
@@ -70,19 +93,12 @@ public class Logic extends Thread {
     }
 
     public void run(){
-        things.add(modelFactory.createModel( ModelFactory.PEACEFUL_DRIVER, 0 ));
-
-        things.add(modelFactory.createModel( ModelFactory.PEACEFUL_DRIVER, 100 ));
-
-        things.add(modelFactory.createModel( ModelFactory.PEACEFUL_DRIVER, 200 ));
-
-
         long lastFrameTime = 0;
         while( !gameOver ){
             if( !paused ){
                 long now = SystemClock.uptimeMillis();
 
-                handleInput();
+                handleInput( lastFrameTime );
                 moveThings( lastFrameTime );
 
                 ModelBase collided = checkCollision();
@@ -100,7 +116,16 @@ public class Logic extends Thread {
         }
     }
 
+    public void setupPlayer(){
+        player = new ModelBase();
+        player.px = 0;
+        player.resourceName = "greencar";
+        player.hp = 3;
+    }
+
     public Logic( SensorManager sm ){
+        setupPlayer();
+
         this.sm = sm;
 
         SensorEventListener sel = new SensorEventListener() {

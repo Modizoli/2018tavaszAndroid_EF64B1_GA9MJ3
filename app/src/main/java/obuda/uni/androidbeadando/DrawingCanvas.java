@@ -38,18 +38,19 @@ class DrawingCanvas extends View {
     Paint roadPaint;
 
     Paint textPaint;
-    int textsize=30;
-    int highscore=0;
+    int textsize = 30;
+    int highscore = 0;
     int wWidth;
     int wHeight;
 
-    boolean scaled=false;
+    boolean scaled = false;
+    public Logic logic;
 
     MediaPlayer gamemusic;
 
     Vector<ModelBase> drawMe;
 
-    public void setDrawList(Vector<ModelBase> list ){
+    public void setDrawList(Vector<ModelBase> list) {
 
         drawMe = list;
     }
@@ -57,49 +58,49 @@ class DrawingCanvas extends View {
     public DrawingCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        gamemusic = MediaPlayer.create(getContext(),R.raw.game);
+        gamemusic = MediaPlayer.create(getContext(), R.raw.game);
         gamemusic.start();
-        gamemusic.setVolume(10,10);
+        gamemusic.setVolume(10, 10);
 
-        redcar = BitmapFactory.decodeResource(getResources(),R.drawable.car_red_front );
-        purplecar = BitmapFactory.decodeResource( getResources(), R.drawable.car_purple_front );
-        greencar = BitmapFactory.decodeResource( getResources(), R.drawable.car_green_front );
+        redcar = BitmapFactory.decodeResource(getResources(), R.drawable.car_red_front);
+        purplecar = BitmapFactory.decodeResource(getResources(), R.drawable.car_purple_front);
+        greencar = BitmapFactory.decodeResource(getResources(), R.drawable.car_green_front);
 
-        fuel = BitmapFactory.decodeResource(getResources(),R.drawable.fuel);
-        terrain = BitmapFactory.decodeResource(getResources(),R.drawable.tree);
-        background = BitmapFactory.decodeResource(getResources(),R.drawable.road);
-        life = BitmapFactory.decodeResource(getResources(),R.drawable.playercar);
+        fuel = BitmapFactory.decodeResource(getResources(), R.drawable.fuel);
+        terrain = BitmapFactory.decodeResource(getResources(), R.drawable.tree);
+        background = BitmapFactory.decodeResource(getResources(), R.drawable.road);
+        life = BitmapFactory.decodeResource(getResources(), R.drawable.playercar);
 
-        textPaint=new Paint();
+        textPaint = new Paint();
         textPaint.setColor(Color.RED);
         textPaint.setTextSize(textsize);
 
-        roadline=new Rect();
-        roadPaint=new Paint();
+        roadline = new Rect();
+        roadPaint = new Paint();
         roadPaint.setColor(Color.WHITE);
-
-
     }
 
-    private void scaling(){
-        backgroundScaled=Bitmap.createScaledBitmap(background,wWidth,wHeight,false);
+    private void scaling() {
+        backgroundScaled = Bitmap.createScaledBitmap(background, wWidth, wHeight, false);
 
-        fuelScaled=Bitmap.createScaledBitmap(fuel,wWidth/20,wHeight/20,false);
-        terrainScaled=Bitmap.createScaledBitmap(terrain,wWidth/20,wHeight/20,false);
+        fuelScaled = Bitmap.createScaledBitmap(fuel, wWidth / 20, wHeight / 20, false);
+        terrainScaled = Bitmap.createScaledBitmap(terrain, wWidth / 20, wHeight / 20, false);
 
-        redcarScaled=Bitmap.createScaledBitmap(redcar,wWidth/10,wHeight/10,false);
-        purplecarScaled=Bitmap.createScaledBitmap(purplecar,wWidth/10,wHeight/10,false);
-        greencarScaled=Bitmap.createScaledBitmap(greencar,wWidth/10,wHeight/10,false);
+        redcarScaled = Bitmap.createScaledBitmap(redcar, wWidth / 10, wHeight / 10, false);
+        purplecarScaled = Bitmap.createScaledBitmap(purplecar, wWidth / 10, wHeight / 10, false);
+        greencarScaled = Bitmap.createScaledBitmap(greencar, wWidth / 10, wHeight / 10, false);
 
-        lifeScaled=Bitmap.createScaledBitmap(life,wWidth/30,wHeight/30,false);
+        lifeScaled = Bitmap.createScaledBitmap(life, wWidth / 30, wHeight / 30, false);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        wWidth=w;
-        wHeight=h;
+        wWidth = w;
+        wHeight = h;
+        logic.setwWidth(w);
+        logic.setwHeigth(h);
 
         scaling();
     }
@@ -112,27 +113,44 @@ class DrawingCanvas extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if (!logic.gameOver) {
 
-        canvas.drawBitmap(backgroundScaled, 0, 0,null);
+            canvas.drawBitmap(backgroundScaled, 0, 0, null);
 
-        canvas.drawText("Score: "+highscore,10,30,textPaint);
+            canvas.drawBitmap(greencarScaled, logic.player.px,
+                    logic.player.py, null);
 
-        for( int i = 0; i < drawMe.size(); ++i ){
-            ModelBase thing = drawMe.get(i);
+            for (int i = 0; i < logic.things.size(); ++i) {
+                synchronized (logic.thingsLock) {
+                    ModelBase thing = logic.things.get(i);
 
-            switch( thing.resourceName ) {
-                case "greencar":
-                    canvas.drawBitmap( greencarScaled, thing.px, thing.py, null );
-                    break;
-                case "redcar":
-                    canvas.drawBitmap( redcarScaled, thing.px, thing.py, null );
-                    break;
-                case "purplecar":
-                    canvas.drawBitmap( purplecarScaled, thing.px, thing.py, null );
-                    break;
+                    switch (thing.resourceName) {
+                        case "greencar":
+                            canvas.drawBitmap(greencarScaled, thing.px, thing.py, null);
+                            break;
+                        case "redcar":
+                            canvas.drawBitmap(redcarScaled, thing.px, thing.py, null);
+                            break;
+                        case "purplecar":
+                            canvas.drawBitmap(purplecarScaled, thing.px, thing.py, null);
+                            break;
+                        case "fuel":
+                            canvas.drawBitmap(fuelScaled, thing.px, thing.py, null);
+                            break;
+                    }
+                }
             }
+
+            for (int i = 0; i < logic.player.hp; i++) {
+                canvas.drawBitmap(lifeScaled, 0, 10, null);
+            }
+
+            canvas.drawText("Score: " + logic.score, 10, 30, textPaint);
         }
-
-
+        else {
+            canvas.drawText("GAME OVER",wWidth/2,wHeight/2,textPaint);
+        }
     }
 }
+
+
