@@ -27,9 +27,9 @@ public class GameFragment  extends Fragment {
         logic = new Logic( sm );
 
         DrawingCanvas dc = ( DrawingCanvas ) v.findViewById( R.id.canvas );
-        dc.setDrawList( logic.things );
 
         logic.view = dc;
+        dc.logic = logic;
 
         logic.setPaused( false );
         logic.start();

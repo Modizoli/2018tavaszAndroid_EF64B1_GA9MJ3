@@ -43,13 +43,7 @@ class DrawingCanvas extends View {
     int highscore=0;
 
     boolean scaled=false;
-
-    Vector<ModelBase> drawMe;
-
-    public void setDrawList(Vector<ModelBase> list ){
-
-        drawMe = list;
-    }
+    public Logic logic;
 
     public DrawingCanvas(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -100,22 +94,21 @@ class DrawingCanvas extends View {
 
         canvas.drawBitmap(backgroundScaled, 0, 0,null);
 
-        canvas.drawText("Score: "+highscore,10,30,textPaint);
+        canvas.drawBitmap( greencarScaled, logic.player.px,
+                logic.player.py, null);
 
-        for( int i = 0; i < drawMe.size(); ++i ){
-            ModelBase thing = drawMe.get(i);
+        for( int i = 0; i < logic.things.size(); ++i ){
+            synchronized( logic.thingsLock ) {
+                ModelBase thing = logic.things.get( i );
 
-            switch( thing.resourceName ) {
-            case "greencar":
-                canvas.drawBitmap( greencarScaled, thing.px, thing.py, null );
-                break;
+                switch( thing.resourceName ) {
+                    case "greencar":
+                        canvas.drawBitmap( greencarScaled, thing.px, thing.py, null );
+                        break;
+                }
             }
         }
 
-        /*
-        canvas.drawBitmap(greencar,0,0,null);
-        canvas.drawBitmap(greencar,100,0,null);
-        canvas.drawBitmap( purplecar, 100, 100, null );
-        */
+        canvas.drawText("Score: "+highscore,10,30,textPaint);
     }
 }
