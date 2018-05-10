@@ -24,6 +24,7 @@ public class Logic extends Thread {
     boolean gameOver    = false;
     long frameRateTime  = 1666;
     float score         = 0;
+    float velocityMultiplyer = 1.f;
 
     int wWidth;
     int wHeight;
@@ -38,8 +39,14 @@ public class Logic extends Thread {
     // we dont move if abs(threshold, value) < threshold
     float inputValueThreshold = 3.f;
 
-    public void setwWidth(int width){this.wWidth=width;}
-    public void setwHeigth(int height){this.wHeight=height;}
+    public void setwWidth(int width){
+        this.wWidth=width;
+        player.px = width / 2;
+    }
+    public void setwHeigth(int height){
+        this.wHeight=height;
+        player.py = height * 0.9f;
+    }
 
     void setPaused( boolean isPaused ){
         paused = isPaused;
@@ -51,8 +58,9 @@ public class Logic extends Thread {
         if(Math.abs(x) > inputValueThreshold){
             // go right
             if( x < 0 ){
-                if( player.px > 0 )
+                if( player.px > 0 ) {
                     player.px += 0.001 * frameTimeMS;
+                }
 
             // go left
             } else {
@@ -70,13 +78,13 @@ public class Logic extends Thread {
 
                 IDriver driver = ( IDriver ) things.get( i );
                 if( driver != null ) {
-                    driver.drive( frameTimeMS );
+                    driver.drive( frameTimeMS, velocityMultiplyer, player );
                     // if its not a driver its fuel. just move it down.
                 } else {
                     t.py += ( t.velocity * frameTimeMS ) / 1000;
                 }
 
-                if( t.py > 1000 ) {
+                if( t.py > wHeight || t.hp <= 0 ) {
                     things.remove( i );
                 }
             }
@@ -89,7 +97,18 @@ public class Logic extends Thread {
     }
 
     void HandleCollision( ModelBase model ){
+        model.hp--;
 
+        if(model instanceof FuelModel){
+            player.hp++;
+        } else {
+            player.hp--;
+
+            if(player.hp == 0){
+                gameOver = true;
+                paused = true;
+            }
+        }
     }
 
     public void run(){
@@ -109,7 +128,7 @@ public class Logic extends Thread {
                 long end = SystemClock.uptimeMillis();
                 lastFrameTime += ( end - now );
 
-                score += 1000.f / lastFrameTime;
+                score += lastFrameTime / 1000.f;
 
                 view.postInvalidate();
             }
