@@ -17,20 +17,22 @@ import java.util.Vector;
 class DrawingCanvas extends View {
 
     Bitmap redcar;
-    Bitmap purplecar;
+    Bitmap yellowcar;
     Bitmap greencar;
     Bitmap fuel;
     Bitmap terrain;
     Bitmap background;
     Bitmap life;
+    Bitmap player;
 
     Bitmap redcarScaled;
-    Bitmap purplecarScaled;
+    Bitmap yellowcarScaled;
     Bitmap greencarScaled;
     Bitmap fuelScaled;
     Bitmap terrainScaled;
     Bitmap backgroundScaled;
     Bitmap lifeScaled;
+    Bitmap playerScaled;
 
     Bitmap road;
 
@@ -63,13 +65,14 @@ class DrawingCanvas extends View {
         gamemusic.isLooping();
 
         redcar = BitmapFactory.decodeResource(getResources(), R.drawable.car_red_front);
-        purplecar = BitmapFactory.decodeResource(getResources(), R.drawable.car_purple_front);
+        yellowcar = BitmapFactory.decodeResource(getResources(), R.drawable.car_yellow_front);
         greencar = BitmapFactory.decodeResource(getResources(), R.drawable.car_green_front);
+        player = BitmapFactory.decodeResource(getResources(), R.drawable.playercar);
 
         fuel = BitmapFactory.decodeResource(getResources(), R.drawable.fuel);
         terrain = BitmapFactory.decodeResource(getResources(), R.drawable.tree);
         background = BitmapFactory.decodeResource(getResources(), R.drawable.road);
-        life = BitmapFactory.decodeResource(getResources(), R.drawable.playercar);
+        life = BitmapFactory.decodeResource(getResources(), R.drawable.life);
 
         textPaint = new Paint();
         textPaint.setColor(Color.RED);
@@ -87,8 +90,9 @@ class DrawingCanvas extends View {
         terrainScaled = Bitmap.createScaledBitmap(terrain, wWidth / 20, wHeight / 20, false);
 
         redcarScaled = Bitmap.createScaledBitmap(redcar, wWidth / 10, wHeight / 10, false);
-        purplecarScaled = Bitmap.createScaledBitmap(purplecar, wWidth / 10, wHeight / 10, false);
+        yellowcarScaled = Bitmap.createScaledBitmap(yellowcar, wWidth / 10, wHeight / 10, false);
         greencarScaled = Bitmap.createScaledBitmap(greencar, wWidth / 10, wHeight / 10, false);
+        playerScaled = Bitmap.createScaledBitmap(player, wWidth / 10, wHeight / 10, false);
 
         lifeScaled = Bitmap.createScaledBitmap(life, wWidth / 30, wHeight / 30, false);
     }
@@ -131,11 +135,14 @@ class DrawingCanvas extends View {
                         case "redcar":
                             canvas.drawBitmap(redcarScaled, thing.px, thing.py, null);
                             break;
-                        case "purplecar":
-                            canvas.drawBitmap(purplecarScaled, thing.px, thing.py, null);
+                        case "yellowcar":
+                            canvas.drawBitmap(yellowcarScaled, thing.px, thing.py, null);
                             break;
                         case "fuel":
                             canvas.drawBitmap(fuelScaled, thing.px, thing.py, null);
+                            break;
+                        case "player":
+                            canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
                             break;
                     }
                 }
