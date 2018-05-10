@@ -11,6 +11,7 @@ public class ModelBase {
     public int height;
     public float velocity;
     public String resourceName;
+    public int hp;
 
     public ModelBase(){
 
@@ -23,5 +24,6 @@ public class ModelBase {
         this.height = mb.height;
         this.velocity = mb.velocity;
         this.resourceName = mb.resourceName;
+        this.hp = mb.hp;
     }
 }
