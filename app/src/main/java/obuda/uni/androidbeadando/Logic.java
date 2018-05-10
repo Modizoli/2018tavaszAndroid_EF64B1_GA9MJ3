@@ -25,6 +25,9 @@ public class Logic extends Thread {
     long frameRateTime  = 1666;
     float score         = 0;
 
+    int wWidth;
+    int wHeight;
+
     ModelBase player;
     Vector<ModelBase> things = new Vector<ModelBase>();
     Object thingsLock = new Object();
@@ -34,6 +37,9 @@ public class Logic extends Thread {
 
     // we dont move if abs(threshold, value) < threshold
     float inputValueThreshold = 3.f;
+
+    public void setwWidth(int width){this.wWidth=width;}
+    public void setwHeigth(int height){this.wHeight=height;}
 
     void setPaused( boolean isPaused ){
         paused = isPaused;

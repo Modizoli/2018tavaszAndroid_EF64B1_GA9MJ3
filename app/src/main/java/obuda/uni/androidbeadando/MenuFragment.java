@@ -12,9 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 public class MenuFragment extends Fragment {
+
     private View v;
     MediaPlayer menumusic;
-
 
     @Nullable
     @Override
@@ -29,7 +29,7 @@ public class MenuFragment extends Fragment {
 
         menumusic = MediaPlayer.create(getContext(),R.raw.menu);
         menumusic.start();
-        menumusic.setVolume(2,2);
+        menumusic.isLooping();
 
         Button startbutton=v.findViewById(R.id.start);
         Button settingbutton=v.findViewById(R.id.settings);
