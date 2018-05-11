@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.AudioManager;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -38,6 +38,12 @@ class DrawingCanvas extends View {
 
     Paint textPaint;
     int textsize = 30;
+    String text="Score: ";
+
+    Paint gameovertextPaint;
+    int gameovertextsize=60;
+    String gameoverText="GAME OVER";
+
     int highscore = 0;
     int wWidth;
     int wHeight;
@@ -75,6 +81,11 @@ class DrawingCanvas extends View {
         textPaint = new Paint();
         textPaint.setColor(Color.RED);
         textPaint.setTextSize(textsize);
+
+        gameovertextPaint = new Paint();
+        gameovertextPaint.setColor(Color.BLACK);
+        gameovertextPaint.setTextSize(gameovertextsize);
+        gameovertextPaint.setTypeface(Typeface.create("",Typeface.BOLD));
     }
 
     private void scaling() {
@@ -112,7 +123,7 @@ class DrawingCanvas extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (!logic.gameOver) {
+
 
             canvas.drawBitmap(backgroundScaled, 0, 0, null);
 
@@ -149,15 +160,15 @@ class DrawingCanvas extends View {
                 }
             }
 
-            for (int i = 0; i < logic.player.hp; i++) {
+            for (int i = 0; i <= logic.player.hp; i++) {
                 canvas.drawBitmap(lifeScaled, wWidth - lifeScaled.getWidth()*i, 10, null);
             }
 
-            canvas.drawText("Score: " + logic.score, 10, 30, textPaint);
-        }
-        else {
-            canvas.drawText("GAME OVER",wWidth/2,wHeight/2,textPaint);
-        }
+            canvas.drawText(text + logic.score, 10, 30, textPaint);
+
+        if(logic.gameOver)
+            canvas.drawText(gameoverText,wWidth/4,wHeight/3,gameovertextPaint);
+
     }
 }
 
