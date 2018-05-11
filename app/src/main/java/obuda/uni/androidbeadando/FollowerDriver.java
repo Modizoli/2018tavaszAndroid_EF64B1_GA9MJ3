@@ -7,7 +7,7 @@ package obuda.uni.androidbeadando;
 public class FollowerDriver extends ModelBase implements IDriver {
 
     @Override
-    public void drive( long elapsedMS ) {
+    public void drive( long elapsedMS, float velocityModifyer, ModelBase player ) {
 
     }
 

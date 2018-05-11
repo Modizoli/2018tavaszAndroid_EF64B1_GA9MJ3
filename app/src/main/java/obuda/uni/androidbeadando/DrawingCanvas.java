@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -88,7 +89,7 @@ class DrawingCanvas extends View {
         greencarScaled = Bitmap.createScaledBitmap(greencar, wWidth / 10, wHeight / 10, false);
         playerScaled = Bitmap.createScaledBitmap(player, wWidth / 10, wHeight / 10, false);
 
-        lifeScaled = Bitmap.createScaledBitmap(life, wWidth / 30, wHeight / 30, false);
+        lifeScaled = Bitmap.createScaledBitmap(life, wWidth / 15, wHeight / 25, false);
     }
 
     @Override
@@ -149,7 +150,7 @@ class DrawingCanvas extends View {
             }
 
             for (int i = 0; i < logic.player.hp; i++) {
-                canvas.drawBitmap(lifeScaled, 0, 10, null);
+                canvas.drawBitmap(lifeScaled, wWidth - lifeScaled.getWidth()*i, 10, null);
             }
 
             canvas.drawText("Score: " + logic.score, 10, 30, textPaint);

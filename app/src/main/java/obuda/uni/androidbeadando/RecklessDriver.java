@@ -6,7 +6,7 @@ package obuda.uni.androidbeadando;
 
 public class RecklessDriver extends ModelBase implements IDriver {
     @Override
-    public void drive( long elapsedMS ) {
+    public void drive( long elapsedMS, float velocityModifyer, ModelBase player ) {
 
     }
 
