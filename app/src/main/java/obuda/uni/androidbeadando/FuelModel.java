@@ -5,4 +5,12 @@ package obuda.uni.androidbeadando;
  */
 
 public class FuelModel extends ModelBase {
+
+    FuelModel(){
+        resourceName = "fuel";
+    }
+
+    FuelModel(FuelModel fm){
+        super(fm);
+    }
 }

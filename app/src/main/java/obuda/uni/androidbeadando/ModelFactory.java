@@ -7,10 +7,10 @@ import android.util.SparseArray;
  */
 
 public class ModelFactory {
-    public static final int FUEL = 0;
-    public static final int PEACEFUL_DRIVER = 1;
-    public static final int RECKLESS_DRIVER = 2;
-    public static final int FOLLOWER_DRIVER = 3;
+    public static final int PEACEFUL_DRIVER = 0;
+    public static final int RECKLESS_DRIVER = 1;
+    public static final int FOLLOWER_DRIVER = 2;
+    public static final int FUEL = 3;
 
     SparseArray<ModelBase> models;
 
@@ -28,22 +28,23 @@ public class ModelFactory {
             case FOLLOWER_DRIVER:
                 model = new FollowerDriver( (FollowerDriver ) models.get( FOLLOWER_DRIVER ) );
                 break;
+            case FUEL:
+                model = new FuelModel( (FuelModel) models.get(FUEL) );
+                break;
             default:
                 break;
         }
 
 
         model.px = px;
-        model.velocity = 000.1f;
-
         return model;
     };
 
     public ModelFactory(){
         models = new SparseArray<ModelBase>();
-        models.append( FUEL, new FuelModel() );
         models.append( PEACEFUL_DRIVER, new PeacefulDriver() );
         models.append( RECKLESS_DRIVER, new RecklessDriver() );
         models.append( FOLLOWER_DRIVER, new FollowerDriver() );
+        models.append( FUEL, new FuelModel() );
     }
 }

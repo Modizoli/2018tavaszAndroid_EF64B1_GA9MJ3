@@ -14,7 +14,8 @@ public class ModelBase {
     public int hp;
 
     public ModelBase(){
-
+        hp = 1;
+        velocity = 0.0005f;
     }
 
     public ModelBase(ModelBase mb){

@@ -120,8 +120,8 @@ class DrawingCanvas extends View {
             canvas.drawBitmap(greencarScaled, logic.player.px,
                     logic.player.py, null);
 
-            for (int i = 0; i < logic.things.size(); ++i) {
-                synchronized (logic.thingsLock) {
+            synchronized (logic.thingsLock) {
+                for (int i = 0; i < logic.things.size(); ++i) {
                     ModelBase thing = logic.things.get(i);
 
                     switch (thing.resourceName) {

@@ -20,11 +20,12 @@ public class Logic extends Thread {
     // set from game fragment
     public DrawingCanvas view;
 
-    boolean paused      = true;
-    boolean gameOver    = false;
-    long frameRateTime  = 1666;
-    float score         = 0;
+    boolean paused = true;
+    boolean gameOver = false;
+    int score = 0;
     float velocityMultiplyer = 1.f;
+    long playTime = 0;
+    int lastSpawnTime = -1;
 
     int wWidth;
     int wHeight;
@@ -37,7 +38,7 @@ public class Logic extends Thread {
     float[] sensorInputValues = new float[]{0.f, 0.f, 0.f};
 
     // we dont move if abs(threshold, value) < threshold
-    float inputValueThreshold = 3.f;
+    float inputValueThreshold = 4.f;
 
     public void setwWidth(int width){
         this.wWidth=width;
@@ -58,30 +59,41 @@ public class Logic extends Thread {
         if(Math.abs(x) > inputValueThreshold){
             // go right
             if( x < 0 ){
-                if( player.px > 0 ) {
+                int maxRight = wWidth - player.width;
+
+                if( player.px < maxRight ) {
                     player.px += 0.001 * frameTimeMS;
+
+                    // correct overdriving
+                    if(player.px > maxRight){
+                        player.px = maxRight;
+                    }
                 }
 
             // go left
             } else {
-                if(player.px < 250 )
+                if(player.px > 0 )
                     player.px -= 0.001 * frameTimeMS;
+
+                if(player.px < 0) {
+                    player.px = 0;
+                }
             }
         }
     }
 
     void moveThings( long frameTimeMS ){
         synchronized( thingsLock ) {
-
             for( int i = 0; i < things.size(); ++i ) {
                 ModelBase t = things.get( i );
 
-                IDriver driver = ( IDriver ) things.get( i );
-                if( driver != null ) {
+                if( t instanceof IDriver ) {
+                    IDriver driver = (IDriver)t;
                     driver.drive( frameTimeMS, velocityMultiplyer, player );
-                    // if its not a driver its fuel. just move it down.
+
+                // if its not a driver its fuel. just move it down.
                 } else {
-                    t.py += ( t.velocity * frameTimeMS ) / 1000;
+                    t.py += ( ( t.velocity * velocityMultiplyer ) * frameTimeMS ) / 1000;
                 }
 
                 if( t.py > wHeight || t.hp <= 0 ) {
@@ -93,6 +105,18 @@ public class Logic extends Thread {
 
     // checks what the player collided with, returns null on nothing
     ModelBase checkCollision(){
+        for(int i = 0; i < things.size(); ++i){
+            ModelBase thing = things.get( i );
+
+            if( player.px < thing.px + thing.width &&
+                player.px + player.width > thing.px &&
+                player.py < thing.py + thing.height &&
+                player.py + player.height > thing.py
+            ) {
+              return thing;
+            }
+        }
+
         return null;
     }
 
@@ -111,24 +135,54 @@ public class Logic extends Thread {
         }
     }
 
+    void spawnThings(){
+        int currentSec = (int)(playTime / 1000);
+
+        if(currentSec > 2 + lastSpawnTime ){
+            // where to spawn the new thing between [10%, 80%] width
+            int thingPx = (int)((wWidth * 0.1) + ( Math.random() * (wWidth * 0.7) ));
+
+            ModelBase thing;
+            // every 10 second spawn a fuel barrel
+            if(currentSec % 10 == 0) {
+                thing = modelFactory.createModel( ModelFactory.FUEL, thingPx );
+            } else {
+                // floor a number between [0.5 and 3.5] so it gives a number between 0 and 3
+                int type = (int)(0.5f + ( 3 * Math.random() ));
+                thing = modelFactory.createModel( type, thingPx );
+            }
+
+            things.add( thing );
+            lastSpawnTime = currentSec;
+        }
+    }
+
+    void updateSpeed(){
+        velocityMultiplyer = ( 1.f + score / 10000.f );
+    }
+
     public void run(){
         long lastFrameTime = 0;
         while( !gameOver ){
             if( !paused ){
-                long now = SystemClock.uptimeMillis();
+                long start = SystemClock.uptimeMillis();
 
                 handleInput( lastFrameTime );
                 moveThings( lastFrameTime );
 
+                spawnThings();
+                updateSpeed();
+
                 ModelBase collided = checkCollision();
-                    if( collided != null ) {
-                        HandleCollision( collided );
-                    }
+                if( collided != null ) {
+                    HandleCollision( collided );
+                }
 
                 long end = SystemClock.uptimeMillis();
-                lastFrameTime += ( end - now );
+                lastFrameTime = ( end - start );
 
-                score += lastFrameTime / 1000.f;
+                playTime += lastFrameTime;
+                score = ( int ) (playTime / 100.f);
 
                 view.postInvalidate();
             }
