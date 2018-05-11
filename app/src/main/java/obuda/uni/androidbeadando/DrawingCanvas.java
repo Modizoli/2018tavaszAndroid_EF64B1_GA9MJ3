@@ -6,7 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -17,28 +17,33 @@ import java.util.Vector;
 class DrawingCanvas extends View {
 
     Bitmap redcar;
-    Bitmap purplecar;
+    Bitmap yellowcar;
     Bitmap greencar;
     Bitmap fuel;
     Bitmap terrain;
     Bitmap background;
     Bitmap life;
+    Bitmap player;
+    Bitmap roadline;
 
     Bitmap redcarScaled;
-    Bitmap purplecarScaled;
+    Bitmap yellowcarScaled;
     Bitmap greencarScaled;
     Bitmap fuelScaled;
     Bitmap terrainScaled;
     Bitmap backgroundScaled;
     Bitmap lifeScaled;
-
-    Bitmap road;
-
-    Rect roadline;
-    Paint roadPaint;
+    Bitmap playerScaled;
+    Bitmap roadlineScaled;
 
     Paint textPaint;
     int textsize = 30;
+    String text="Score: ";
+
+    Paint gameovertextPaint;
+    int gameovertextsize=60;
+    String gameoverText="GAME OVER";
+
     int highscore = 0;
     int wWidth;
     int wHeight;
@@ -60,24 +65,27 @@ class DrawingCanvas extends View {
 
         gamemusic = MediaPlayer.create(getContext(), R.raw.game);
         gamemusic.start();
-        gamemusic.setVolume(10, 10);
+        gamemusic.isLooping();
 
         redcar = BitmapFactory.decodeResource(getResources(), R.drawable.car_red_front);
-        purplecar = BitmapFactory.decodeResource(getResources(), R.drawable.car_purple_front);
+        yellowcar = BitmapFactory.decodeResource(getResources(), R.drawable.car_yellow_front);
         greencar = BitmapFactory.decodeResource(getResources(), R.drawable.car_green_front);
+        player = BitmapFactory.decodeResource(getResources(), R.drawable.playercar);
 
         fuel = BitmapFactory.decodeResource(getResources(), R.drawable.fuel);
         terrain = BitmapFactory.decodeResource(getResources(), R.drawable.tree);
         background = BitmapFactory.decodeResource(getResources(), R.drawable.road);
-        life = BitmapFactory.decodeResource(getResources(), R.drawable.playercar);
+        life = BitmapFactory.decodeResource(getResources(), R.drawable.life);
+        roadline=BitmapFactory.decodeResource(getResources(), R.drawable.roadline);
 
         textPaint = new Paint();
         textPaint.setColor(Color.RED);
         textPaint.setTextSize(textsize);
 
-        roadline = new Rect();
-        roadPaint = new Paint();
-        roadPaint.setColor(Color.WHITE);
+        gameovertextPaint = new Paint();
+        gameovertextPaint.setColor(Color.BLACK);
+        gameovertextPaint.setTextSize(gameovertextsize);
+        gameovertextPaint.setTypeface(Typeface.create("",Typeface.BOLD));
     }
 
     private void scaling() {
@@ -85,12 +93,14 @@ class DrawingCanvas extends View {
 
         fuelScaled = Bitmap.createScaledBitmap(fuel, wWidth / 20, wHeight / 20, false);
         terrainScaled = Bitmap.createScaledBitmap(terrain, wWidth / 20, wHeight / 20, false);
+        roadlineScaled = Bitmap.createScaledBitmap(terrain, wWidth / 25, wHeight / 20, false);
 
         redcarScaled = Bitmap.createScaledBitmap(redcar, wWidth / 10, wHeight / 10, false);
-        purplecarScaled = Bitmap.createScaledBitmap(purplecar, wWidth / 10, wHeight / 10, false);
+        yellowcarScaled = Bitmap.createScaledBitmap(yellowcar, wWidth / 10, wHeight / 10, false);
         greencarScaled = Bitmap.createScaledBitmap(greencar, wWidth / 10, wHeight / 10, false);
+        playerScaled = Bitmap.createScaledBitmap(player, wWidth / 10, wHeight / 10, false);
 
-        lifeScaled = Bitmap.createScaledBitmap(life, wWidth / 30, wHeight / 30, false);
+        lifeScaled = Bitmap.createScaledBitmap(life, wWidth / 15, wHeight / 25, false);
     }
 
     @Override
@@ -113,7 +123,7 @@ class DrawingCanvas extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if (!logic.gameOver) {
+
 
             canvas.drawBitmap(backgroundScaled, 0, 0, null);
 
@@ -131,25 +141,34 @@ class DrawingCanvas extends View {
                         case "redcar":
                             canvas.drawBitmap(redcarScaled, thing.px, thing.py, null);
                             break;
-                        case "purplecar":
-                            canvas.drawBitmap(purplecarScaled, thing.px, thing.py, null);
+                        case "yellowcar":
+                            canvas.drawBitmap(yellowcarScaled, thing.px, thing.py, null);
                             break;
                         case "fuel":
                             canvas.drawBitmap(fuelScaled, thing.px, thing.py, null);
+                            break;
+                        case "player":
+                            canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
+                            break;
+                        case "roadline":
+                            canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
+                            break;
+                        case "terrain":
+                            canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
                             break;
                     }
                 }
             }
 
-            for (int i = 0; i < logic.player.hp; i++) {
-                canvas.drawBitmap(lifeScaled, 0, 10, null);
+            for (int i = 0; i <= logic.player.hp; i++) {
+                canvas.drawBitmap(lifeScaled, wWidth - lifeScaled.getWidth()*i, 10, null);
             }
 
-            canvas.drawText("Score: " + logic.score, 10, 30, textPaint);
-        }
-        else {
-            canvas.drawText("GAME OVER",wWidth/2,wHeight/2,textPaint);
-        }
+            canvas.drawText(text + logic.score, 10, 30, textPaint);
+
+        if(logic.gameOver)
+            canvas.drawText(gameoverText,wWidth/4,wHeight/3,gameovertextPaint);
+
     }
 }
 
