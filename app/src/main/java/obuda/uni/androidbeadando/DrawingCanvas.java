@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.media.MediaPlayer;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -24,6 +23,7 @@ class DrawingCanvas extends View {
     Bitmap background;
     Bitmap life;
     Bitmap player;
+    Bitmap roadline;
 
     Bitmap redcarScaled;
     Bitmap yellowcarScaled;
@@ -33,11 +33,7 @@ class DrawingCanvas extends View {
     Bitmap backgroundScaled;
     Bitmap lifeScaled;
     Bitmap playerScaled;
-
-    Bitmap road;
-
-    Rect roadline;
-    Paint roadPaint;
+    Bitmap roadlineScaled;
 
     Paint textPaint;
     int textsize = 30;
@@ -73,14 +69,11 @@ class DrawingCanvas extends View {
         terrain = BitmapFactory.decodeResource(getResources(), R.drawable.tree);
         background = BitmapFactory.decodeResource(getResources(), R.drawable.road);
         life = BitmapFactory.decodeResource(getResources(), R.drawable.life);
+        roadline=BitmapFactory.decodeResource(getResources(), R.drawable.roadline);
 
         textPaint = new Paint();
         textPaint.setColor(Color.RED);
         textPaint.setTextSize(textsize);
-
-        roadline = new Rect();
-        roadPaint = new Paint();
-        roadPaint.setColor(Color.WHITE);
     }
 
     private void scaling() {
@@ -88,6 +81,7 @@ class DrawingCanvas extends View {
 
         fuelScaled = Bitmap.createScaledBitmap(fuel, wWidth / 20, wHeight / 20, false);
         terrainScaled = Bitmap.createScaledBitmap(terrain, wWidth / 20, wHeight / 20, false);
+        roadlineScaled = Bitmap.createScaledBitmap(terrain, wWidth / 25, wHeight / 20, false);
 
         redcarScaled = Bitmap.createScaledBitmap(redcar, wWidth / 10, wHeight / 10, false);
         yellowcarScaled = Bitmap.createScaledBitmap(yellowcar, wWidth / 10, wHeight / 10, false);
@@ -142,6 +136,12 @@ class DrawingCanvas extends View {
                             canvas.drawBitmap(fuelScaled, thing.px, thing.py, null);
                             break;
                         case "player":
+                            canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
+                            break;
+                        case "roadline":
+                            canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
+                            break;
+                        case "terrain":
                             canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
                             break;
                     }
