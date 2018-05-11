@@ -16,6 +16,21 @@ import java.util.Vector;
 
 class DrawingCanvas extends View {
 
+    public static final int CAR_RATIO_WIDTH = 10;
+    public static final int CAR_RATIO_HEIGHT = 10;
+
+    public static final int TERRAIN_RATIO_WIDTH = 20;
+    public static final int TERRAIN_RATIO_HEIGHT = 20;
+
+    public static final int LIFE_RATIO_WIDTH = 15;
+    public static final int LIFE_RATIO_HEIGHT = 25;
+
+    public static final int FUEL_RATIO_WIDTH = 10;
+    public static final int FUEL_RATIO_HEIGHT = 20;
+
+    public static final int ROAD_LINE_RATIO_WIDTH = 25;
+    public static final int ROAD_LINE_RATIO_HEIGHT = 20;
+
     Bitmap redcar;
     Bitmap yellowcar;
     Bitmap greencar;
@@ -91,16 +106,16 @@ class DrawingCanvas extends View {
     private void scaling() {
         backgroundScaled = Bitmap.createScaledBitmap(background, wWidth, wHeight, false);
 
-        fuelScaled = Bitmap.createScaledBitmap(fuel, wWidth / 20, wHeight / 20, false);
-        terrainScaled = Bitmap.createScaledBitmap(terrain, wWidth / 20, wHeight / 20, false);
-        roadlineScaled = Bitmap.createScaledBitmap(terrain, wWidth / 25, wHeight / 20, false);
+        fuelScaled = Bitmap.createScaledBitmap(fuel, wWidth / FUEL_RATIO_WIDTH, wHeight / FUEL_RATIO_HEIGHT, false);
+        terrainScaled = Bitmap.createScaledBitmap(terrain, wWidth / TERRAIN_RATIO_WIDTH, wHeight / TERRAIN_RATIO_HEIGHT, false);
+        roadlineScaled = Bitmap.createScaledBitmap(terrain, wWidth / ROAD_LINE_RATIO_WIDTH, wHeight / ROAD_LINE_RATIO_HEIGHT, false);
 
-        redcarScaled = Bitmap.createScaledBitmap(redcar, wWidth / 10, wHeight / 10, false);
-        yellowcarScaled = Bitmap.createScaledBitmap(yellowcar, wWidth / 10, wHeight / 10, false);
-        greencarScaled = Bitmap.createScaledBitmap(greencar, wWidth / 10, wHeight / 10, false);
-        playerScaled = Bitmap.createScaledBitmap(player, wWidth / 10, wHeight / 10, false);
+        redcarScaled = Bitmap.createScaledBitmap(redcar, wWidth / CAR_RATIO_WIDTH, wHeight / CAR_RATIO_HEIGHT, false);
+        yellowcarScaled = Bitmap.createScaledBitmap(yellowcar, wWidth / CAR_RATIO_WIDTH, wHeight / CAR_RATIO_HEIGHT, false);
+        greencarScaled = Bitmap.createScaledBitmap(greencar, wWidth / CAR_RATIO_WIDTH, wHeight / CAR_RATIO_HEIGHT, false);
+        playerScaled = Bitmap.createScaledBitmap(player, wWidth / CAR_RATIO_WIDTH, wHeight / CAR_RATIO_HEIGHT, false);
 
-        lifeScaled = Bitmap.createScaledBitmap(life, wWidth / 15, wHeight / 25, false);
+        lifeScaled = Bitmap.createScaledBitmap(life, wWidth / LIFE_RATIO_WIDTH, wHeight / LIFE_RATIO_HEIGHT, false);
     }
 
     @Override
@@ -147,9 +162,7 @@ class DrawingCanvas extends View {
                         case "fuel":
                             canvas.drawBitmap(fuelScaled, thing.px, thing.py, null);
                             break;
-                        case "player":
-                            canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
-                            break;
+
                         case "roadline":
                             canvas.drawBitmap(playerScaled, thing.px, thing.py, null);
                             break;
@@ -159,6 +172,8 @@ class DrawingCanvas extends View {
                     }
                 }
             }
+
+            canvas.drawBitmap(playerScaled, logic.player.px, logic.player.py, null);
 
             for (int i = 0; i <= logic.player.hp; i++) {
                 canvas.drawBitmap(lifeScaled, wWidth - lifeScaled.getWidth()*i, 10, null);

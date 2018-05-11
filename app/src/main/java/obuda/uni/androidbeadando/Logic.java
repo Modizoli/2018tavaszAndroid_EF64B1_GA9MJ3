@@ -4,6 +4,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +30,8 @@ public class Logic extends Thread {
 
     int wWidth;
     int wHeight;
+
+    MediaPlayer crashsound;
 
     ModelBase player;
     Vector<ModelBase> things = new Vector<ModelBase>();
@@ -113,6 +116,8 @@ public class Logic extends Thread {
                 player.py < thing.py + thing.height &&
                 player.py + player.height > thing.py
             ) {
+                crashsound.start();
+
               return thing;
             }
         }
