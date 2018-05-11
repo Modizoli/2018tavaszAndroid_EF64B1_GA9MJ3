@@ -2,6 +2,7 @@ package obuda.uni.androidbeadando;
 
 import android.content.Context;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -30,6 +31,8 @@ public class GameFragment  extends Fragment {
 
         logic.view = dc;
         dc.logic = logic;
+
+        logic.crashsound = MediaPlayer.create(logic.view.getContext(), R.raw.crash);
 
         logic.setPaused( false );
         logic.start();
