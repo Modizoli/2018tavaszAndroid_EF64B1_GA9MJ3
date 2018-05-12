@@ -45,8 +45,6 @@ public class Logic extends Thread {
     // we dont move if abs(threshold, value) < threshold
     float inputValueThreshold = 4.f;
 
-<<<<<<< HEAD
-=======
     void setThingsWidth(){
         int carWidth = wWidth / DrawingCanvas.CAR_RATIO_WIDTH;
         int fuelWidth = wWidth / DrawingCanvas.FUEL_RATIO_WIDTH;
@@ -91,7 +89,6 @@ public class Logic extends Thread {
         modelFactory.models.get( ModelFactory.FUEL ).height = fuelHeight;
     }
 
->>>>>>> dev
     public void setwWidth(int width){
         this.wWidth=width;
         player.px = width / 2;
@@ -114,7 +111,7 @@ public class Logic extends Thread {
                 int maxRight = wWidth - player.width;
 
                 if( player.px < maxRight ) {
-                    player.px += 0.001 * frameTimeMS;
+                    player.px += 10000 * frameTimeMS;
 
                     // correct overdriving
                     if(player.px > maxRight){
