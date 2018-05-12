@@ -43,13 +43,59 @@ public class Logic extends Thread {
     // we dont move if abs(threshold, value) < threshold
     float inputValueThreshold = 4.f;
 
+    void setThingsWidth(){
+        int carWidth = wWidth / DrawingCanvas.CAR_RATIO_WIDTH;
+        int fuelWidth = wWidth / DrawingCanvas.FUEL_RATIO_WIDTH;
+
+        // existing
+        for(int i = 0; i < things.size(); ++i){
+            ModelBase thing = things.get(i);
+
+            if( thing instanceof FuelModel){
+                thing.width = fuelWidth;
+            } else if (thing instanceof IDriver ){
+                thing.width = carWidth;
+            }
+        }
+
+        // factory
+        modelFactory.models.get( ModelFactory.FOLLOWER_DRIVER ).width = carWidth;
+        modelFactory.models.get( ModelFactory.RECKLESS_DRIVER ).width = carWidth;
+        modelFactory.models.get( ModelFactory.PEACEFUL_DRIVER ).width = carWidth;
+        modelFactory.models.get( ModelFactory.FUEL ).width = fuelWidth;
+    }
+
+    void setThingsHeight(){
+        int carHeight = wHeight / DrawingCanvas.CAR_RATIO_HEIGHT;
+        int fuelHeight = wHeight / DrawingCanvas.FUEL_RATIO_HEIGHT;
+
+        // existing
+        for(int i = 0; i < things.size(); ++i){
+            ModelBase thing = things.get(i);
+
+            if( thing instanceof FuelModel){
+                thing.width = fuelHeight;
+            } else if (thing instanceof IDriver ){
+                thing.width = carHeight;
+            }
+        }
+
+        // factory
+        modelFactory.models.get( ModelFactory.FOLLOWER_DRIVER ).width = carHeight;
+        modelFactory.models.get( ModelFactory.RECKLESS_DRIVER ).width = carHeight;
+        modelFactory.models.get( ModelFactory.PEACEFUL_DRIVER ).width = carHeight;
+        modelFactory.models.get( ModelFactory.FUEL ).width = fuelHeight;
+    }
+
     public void setwWidth(int width){
         this.wWidth=width;
         player.px = width / 2;
+        setThingsWidth();
     }
     public void setwHeigth(int height){
         this.wHeight=height;
         player.py = height * 0.9f;
+        setThingsHeight();
     }
 
     void setPaused( boolean isPaused ){

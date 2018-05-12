@@ -12,7 +12,7 @@ public class FollowerDriver extends ModelBase implements IDriver {
     }
 
     public FollowerDriver(){
-        resourceName = "purplecar";
+        resourceName = "greencar";
     }
     public FollowerDriver(FollowerDriver fd){
         super(fd);
