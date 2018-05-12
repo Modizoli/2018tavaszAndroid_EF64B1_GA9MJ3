@@ -111,7 +111,7 @@ public class Logic extends Thread {
                 int maxRight = wWidth - player.width;
 
                 if( player.px < maxRight ) {
-                    player.px += 10000 * frameTimeMS;
+                    player.px += 0.001 * frameTimeMS;
 
                     // correct overdriving
                     if(player.px > maxRight){
