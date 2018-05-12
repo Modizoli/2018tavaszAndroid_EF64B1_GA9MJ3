@@ -5,8 +5,15 @@ package obuda.uni.androidbeadando;
  */
 
 public class RecklessDriver extends ModelBase implements IDriver {
+    float angle = 0;
+
     @Override
     public void drive( long elapsedMS, float velocityModifyer, ModelBase player ) {
+        px += Math.sin(Math.toRadians( angle += 20 ));
+
+        if(angle < 360)
+            angle = 0;
+
         py += ( velocity * elapsedMS );
     }
 

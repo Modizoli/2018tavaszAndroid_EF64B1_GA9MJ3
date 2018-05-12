@@ -8,7 +8,12 @@ public class FollowerDriver extends ModelBase implements IDriver {
 
     @Override
     public void drive( long elapsedMS, float velocityModifyer, ModelBase player ) {
-        py += ( velocity * elapsedMS );
+        float delta_x = px - player.px;
+        px += delta_x * velocity * 0.1;
+
+        py += (
+                velocity * elapsedMS
+        );
     }
 
     public FollowerDriver(){
