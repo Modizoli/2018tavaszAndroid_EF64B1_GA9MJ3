@@ -11,7 +11,7 @@ public class RecklessDriver extends ModelBase implements IDriver {
     }
 
     public RecklessDriver(){
-        resourceName = "yellowcar";
+        resourceName = "redcar";
     }
     public RecklessDriver(RecklessDriver rd){
         super(rd);
