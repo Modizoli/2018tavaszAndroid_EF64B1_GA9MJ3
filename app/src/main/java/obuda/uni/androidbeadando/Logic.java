@@ -1,11 +1,13 @@
 package obuda.uni.androidbeadando;
 
+import android.graphics.Rect;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.SystemClock;
+import android.support.constraint.solver.widgets.Rectangle;
 import android.util.Log;
 import android.view.View;
 
@@ -74,17 +76,17 @@ public class Logic extends Thread {
             ModelBase thing = things.get(i);
 
             if( thing instanceof FuelModel){
-                thing.width = fuelHeight;
+                thing.height = fuelHeight;
             } else if (thing instanceof IDriver ){
-                thing.width = carHeight;
+                thing.height = carHeight;
             }
         }
 
         // factory
-        modelFactory.models.get( ModelFactory.FOLLOWER_DRIVER ).width = carHeight;
-        modelFactory.models.get( ModelFactory.RECKLESS_DRIVER ).width = carHeight;
-        modelFactory.models.get( ModelFactory.PEACEFUL_DRIVER ).width = carHeight;
-        modelFactory.models.get( ModelFactory.FUEL ).width = fuelHeight;
+        modelFactory.models.get( ModelFactory.FOLLOWER_DRIVER ).height = carHeight;
+        modelFactory.models.get( ModelFactory.RECKLESS_DRIVER ).height = carHeight;
+        modelFactory.models.get( ModelFactory.PEACEFUL_DRIVER ).height = carHeight;
+        modelFactory.models.get( ModelFactory.FUEL ).height = fuelHeight;
     }
 
     public void setwWidth(int width){
@@ -142,7 +144,7 @@ public class Logic extends Thread {
 
                 // if its not a driver its fuel. just move it down.
                 } else {
-                    t.py += ( ( t.velocity * velocityMultiplyer ) * frameTimeMS ) / 1000;
+                    t.py += t.velocity * velocityMultiplyer * frameTimeMS;
                 }
 
                 if( t.py > wHeight || t.hp <= 0 ) {
@@ -154,17 +156,25 @@ public class Logic extends Thread {
 
     // checks what the player collided with, returns null on nothing
     ModelBase checkCollision(){
+        Rect prect = new Rect();
+        prect.top = (int)player.py;
+        prect.left = (int)player.px;
+        prect.bottom = (int)player.py + player.height;
+        prect.right = (int)player.py + player.width;
+
+
         for(int i = 0; i < things.size(); ++i){
             ModelBase thing = things.get( i );
 
-            if( player.px < thing.px + thing.width &&
-                player.px + player.width > thing.px &&
-                player.py < thing.py + thing.height &&
-                player.py + player.height > thing.py
-            ) {
-                crashsound.start();
+            Rect trect = new Rect();
+            trect.top = (int)thing.py;
+            trect.left = (int)thing.px;
+            trect.bottom = (int)thing.py + thing.height;
+            trect.right = (int)thing.py + thing.width;
 
-              return thing;
+            if(prect.intersect( trect )){
+                crashsound.start();
+                return thing;
             }
         }
 
@@ -233,7 +243,7 @@ public class Logic extends Thread {
                 lastFrameTime = ( end - start );
 
                 playTime += lastFrameTime;
-                score = ( int ) (playTime / 100.f);
+                score = ( int ) (playTime / 100);
 
                 view.postInvalidate();
             }
