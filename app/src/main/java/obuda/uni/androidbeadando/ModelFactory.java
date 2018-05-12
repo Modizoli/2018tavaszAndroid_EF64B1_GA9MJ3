@@ -1,41 +1,50 @@
 package obuda.uni.androidbeadando;
 
+import android.util.SparseArray;
+
 /**
  * Created by Zoltán on 4/14/2018.
  */
 
 public class ModelFactory {
-    public enum ThingsEnum{
-        fuel,
-        peacefulDriver,
-        recklessDriver,
-        followerDriver
-    }
+    public static final int PEACEFUL_DRIVER = 0;
+    public static final int RECKLESS_DRIVER = 1;
+    public static final int FOLLOWER_DRIVER = 2;
+    public static final int FUEL = 3;
 
-    public ModelBase createModel( ThingsEnum type ) {
-        ModelBase res = null;
+    SparseArray<ModelBase> models;
 
-        switch( type ) {
-            case fuel:
-                FuelModel fm = new FuelModel();
+    public ModelBase createModel( int type, int px ) {
+        ModelBase model = null;
 
-                res = fm;
+        // Copy ctor downcast; crashes if using base copy ctor.
+        switch(type){
+            case PEACEFUL_DRIVER:
+                model = new PeacefulDriver( (PeacefulDriver ) models.get( PEACEFUL_DRIVER ) );
                 break;
-            case peacefulDriver:
-                PeacefulDriver pd = new PeacefulDriver();
-
-                res = pd;
-            case recklessDriver:
-                RecklessDriver rd = new RecklessDriver();
-
-                res = rd;
-            case followerDriver:
-                FollowerDriver fd = new FollowerDriver();
-
-                res = fd;
+            case RECKLESS_DRIVER:
+                model = new RecklessDriver( (RecklessDriver ) models.get( RECKLESS_DRIVER ) );
                 break;
-        };
+            case FOLLOWER_DRIVER:
+                model = new FollowerDriver( (FollowerDriver ) models.get( FOLLOWER_DRIVER ) );
+                break;
+            case FUEL:
+                model = new FuelModel( (FuelModel) models.get(FUEL) );
+                break;
+            default:
+                break;
+        }
 
-        return res;
+
+        model.px = px;
+        return model;
     };
+
+    public ModelFactory(){
+        models = new SparseArray<ModelBase>();
+        models.append( PEACEFUL_DRIVER, new PeacefulDriver() );
+        models.append( RECKLESS_DRIVER, new RecklessDriver() );
+        models.append( FOLLOWER_DRIVER, new FollowerDriver() );
+        models.append( FUEL, new FuelModel() );
+    }
 }

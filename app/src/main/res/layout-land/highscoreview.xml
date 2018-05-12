@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/highscoretext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/high_scores"/>
+
+    <view class="android.support.v7.app.AlertController$RecycleListView"
+        android:id="@+id/highscoreboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </view>
+
+
+
+</android.support.constraint.ConstraintLayout>
