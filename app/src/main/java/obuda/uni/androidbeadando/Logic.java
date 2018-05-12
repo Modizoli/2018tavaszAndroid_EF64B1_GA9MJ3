@@ -92,12 +92,10 @@ public class Logic extends Thread {
     public void setwWidth(int width){
         this.wWidth=width;
         player.px = width / 2;
-        setThingsWidth();
     }
     public void setwHeigth(int height){
         this.wHeight=height;
         player.py = height * 0.9f;
-        setThingsHeight();
     }
 
     void setPaused( boolean isPaused ){

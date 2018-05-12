@@ -15,6 +15,6 @@ public class PeacefulDriver extends ModelBase implements IDriver {
     }
     public PeacefulDriver(PeacefulDriver pd){
         super(pd);
-        resourceName = "redcar";
+        resourceName = "greencar";
     }
 }

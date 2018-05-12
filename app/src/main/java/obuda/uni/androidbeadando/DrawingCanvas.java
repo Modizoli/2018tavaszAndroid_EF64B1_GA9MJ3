@@ -25,7 +25,7 @@ class DrawingCanvas extends View {
     public static final int LIFE_RATIO_WIDTH = 15;
     public static final int LIFE_RATIO_HEIGHT = 25;
 
-    public static final int FUEL_RATIO_WIDTH = 10;
+    public static final int FUEL_RATIO_WIDTH = 12;
     public static final int FUEL_RATIO_HEIGHT = 20;
 
     public static final int ROAD_LINE_RATIO_WIDTH = 25;
